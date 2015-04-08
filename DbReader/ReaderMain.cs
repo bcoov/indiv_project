@@ -28,7 +28,7 @@ namespace DbReader
                 dbName.Text = value;
             }
         }
-
+        // Comment
         public ReaderMain()
         {
             InitializeComponent();
