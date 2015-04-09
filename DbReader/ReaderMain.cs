@@ -108,11 +108,15 @@ namespace DbReader
          * Method to connect to the given Database
          * **Search for "OleDb Metadata" or "OleDb Enumerate tables"
          *    for finding contents of db tuple names**
-         *    
+         * 
+         * [April 8th, 2015]
          * Metadata for Table and Columns obtainable/listable. Now what?
+         * Additionally: What is the MetaData and what does it give me?
+         * Can this be condensed into other methods/classes/folders?
          */
         private void connectDB(string DataBase, string PassWord)
         {
+            // "Database" and "Password" obtained from Forms (i.e. User input)
             string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source=" + DataBase + "; Jet OLEDB:Database Password=" + PassWord;
             OleDbConnection conn = new OleDbConnection(connectionString);
             try
