@@ -8,9 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DbReader.DataLogic;
 
 namespace DbReader
 {
+    // OleDb vs SqlClient?
     public partial class ReaderMain : Form
     {
         // String for database file path
@@ -28,7 +30,7 @@ namespace DbReader
                 dbName.Text = value;
             }
         }
-        // Comment
+
         public ReaderMain()
         {
             InitializeComponent();
@@ -72,7 +74,7 @@ namespace DbReader
             string pw;
             CredentialPrompt passWord = new CredentialPrompt();
 
-            System.Windows.Forms.DialogResult res = passWord.ShowDialog();
+            System.Windows.Forms.DialogResult res = passWord.ShowDialog();  // Displays the prompt
             pw = passWord.PassWord;
 
             if (passWord.DialogResult.Equals(DialogResult.Cancel))   // If Cancel button on prompt form, return null
@@ -168,6 +170,19 @@ namespace DbReader
         private void formQuit_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void tester_Click(object sender, EventArgs e)
+        {
+            Tester test = new Tester(selectedFilePath);
+            if (test.conn_works())
+            {
+                MessageBox.Show("Tester success!");
+            }
+            else
+            {
+                MessageBox.Show("Tester fails!");
+            }
         }
 
         // Obsolete with dbName disabled (non-interactive)

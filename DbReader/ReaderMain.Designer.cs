@@ -33,6 +33,7 @@
             this.dbName = new System.Windows.Forms.TextBox();
             this.dbSelect = new System.Windows.Forms.Button();
             this.resultList = new System.Windows.Forms.RichTextBox();
+            this.tester = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // connectTo
@@ -84,11 +85,22 @@
             this.resultList.TabIndex = 5;
             this.resultList.Text = "";
             // 
+            // tester
+            // 
+            this.tester.Location = new System.Drawing.Point(12, 12);
+            this.tester.Name = "tester";
+            this.tester.Size = new System.Drawing.Size(132, 25);
+            this.tester.TabIndex = 6;
+            this.tester.Text = "Test (Do not click!)";
+            this.tester.UseVisualStyleBackColor = true;
+            this.tester.Click += new System.EventHandler(this.tester_Click);
+            // 
             // ReaderMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(536, 433);
+            this.Controls.Add(this.tester);
             this.Controls.Add(this.resultList);
             this.Controls.Add(this.dbSelect);
             this.Controls.Add(this.dbName);
@@ -108,6 +120,7 @@
         private System.Windows.Forms.TextBox dbName;
         private System.Windows.Forms.Button dbSelect;
         private System.Windows.Forms.RichTextBox resultList;
+        private System.Windows.Forms.Button tester;
     }
 }
 

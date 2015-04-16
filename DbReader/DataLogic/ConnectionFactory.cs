@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
+using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +24,11 @@ namespace DbReader.DataLogic
 
         // Constructor: Creates a new connection instance from the given string
         // using the configuration file. Still trying to figure this part out.
-        internal static ConnectionFactory new_instance(string connection_name)
+        internal static ConnectionFactory new_instance(string connection_str)
         {
             try
             {
-                return new ConnectionFactory(ConfigurationManager.ConnectionStrings[connection_name].ConnectionString);
+                return new ConnectionFactory(connection_str);
             }
             catch (Exception)
             {
@@ -36,11 +36,11 @@ namespace DbReader.DataLogic
             }
         }
 
-        internal SqlConnection create_connection()
+        internal OleDbConnection create_connection()
         {
             try
             {
-                return new SqlConnection(connection_str);
+                return new OleDbConnection(connection_str);
             }
             catch (Exception)
             {
