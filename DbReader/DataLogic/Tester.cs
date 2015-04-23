@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.Linq;
@@ -8,9 +9,52 @@ using System.Threading.Tasks;
 
 namespace DbReader.DataLogic
 {
-    internal class Tester : Data
+    internal class Tester : Data<Employee>
     {
-        private ConnectionFactory test_fact;
+        // Constructor (What exactly is this doing?)
+        internal Tester()
+            : base(ConfigurationManager.AppSettings["db.connections.default"])
+        {
+            return;
+        }
+
+        // Build an Employee object from the database
+        private Employee findEmployee(IDataReader read)
+        {
+            Employee emp = new Employee();
+            emp.id = read.GetInt32(0);
+            emp.firstName = read.GetString(1);
+            emp.lastName = read.GetString(2);
+            if (read.IsDBNull(3))
+            {
+                emp.eMail = null;
+            }
+            else
+            {
+                emp.eMail = read.GetString(3);
+            }
+            return emp;
+        }
+
+        
+        // Query and return all Employees within an array (id, first/last name)
+        internal Employee[] findAllEmployees()
+        {
+            string sqlQuery = "select id, firstName, lastName, email from people";
+
+            using (OleDbConnection conn = conn_fact.create_connection())
+            {
+                conn.Open();
+                using (OleDbCommand command = new OleDbCommand(sqlQuery, conn))
+                {
+                    using (IDataReader reader = command.ExecuteReader())
+                    {
+                        return base.get_results(findEmployee, reader);
+                    }
+                }
+            }
+        }
+        /*private ConnectionFactory test_fact;
 
         internal Tester(string connection)
         {
@@ -37,6 +81,6 @@ namespace DbReader.DataLogic
                 success = false;
             }
             return success;
-        }
+        }*/
     }
 }

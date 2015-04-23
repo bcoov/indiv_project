@@ -12,7 +12,6 @@ using DbReader.DataLogic;
 
 namespace DbReader
 {
-    // OleDb vs SqlClient?
     public partial class ReaderMain : Form
     {
         // String for database file path
