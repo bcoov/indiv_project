@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace DbReader.DataLogic
 {
+    /**
+     * This series of classes doesn't really do anything yet. It's largely a framework modeled
+     * from the tutorial referenced in the Data class. Should allow the groundwork for Db
+     * operations however.
+     */
     internal class Tester : Data<Employee>
     {
         // Constructor (What exactly is this doing?)
@@ -36,11 +41,10 @@ namespace DbReader.DataLogic
             return emp;
         }
 
-        
         // Query and return all Employees within an array (id, first/last name)
         internal Employee[] findAllEmployees()
         {
-            string sqlQuery = "select id, firstName, lastName, email from people";
+            string sqlQuery = "select id, firstName, lastName, email from ***";
 
             using (OleDbConnection conn = conn_fact.create_connection())
             {

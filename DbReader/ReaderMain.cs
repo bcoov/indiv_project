@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
+using System.Data.Sql;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -123,10 +125,25 @@ namespace DbReader
             try
             {
                 conn.Open();
-                // Do connection stuff here; Queries, additions, etc.
                 // Following based from http://my.execpc.com/~gopalan/dotnet/ado_net/ado.net_retrieving_database_metadata.html
                 DataTable tables = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
                 DataTable columns = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, null);
+
+                /*OleDbCommand comm = conn.CreateCommand();
+                comm.CommandText = "select * from TrainRec_New where 1 = 1";
+                comm.CommandType = CommandType.Text;
+
+                OleDbDataReader read = comm.ExecuteReader();
+                DataTable scheme = read.GetSchemaTable();
+
+                foreach (DataRow row in tables.Rows)
+                {
+                    resultList.Text += ("{0}, {1}, {2}" +
+                        row.Field<string>("COLUMN_NAME") +
+                        row.Field<Type>("DATA_TYPE") +
+                        row.Field<int>("COLUMN_SIZE") +
+                        System.Environment.NewLine);
+                }*/
 
                 foreach (DataColumn col in tables.Columns)
                 {
@@ -144,7 +161,7 @@ namespace DbReader
 
                 foreach (DataColumn col in columns.Columns)
                 {
-                    resultList.Text += (col + System.Environment.NewLine);      // Columns MetaData
+                    resultList.Text += (col.ColumnName + System.Environment.NewLine);      // Columns MetaData
                 }
 
                 resultList.Text += ("-----" + System.Environment.NewLine);
@@ -173,15 +190,7 @@ namespace DbReader
 
         private void tester_Click(object sender, EventArgs e)
         {
-            Tester test = new Tester(selectedFilePath);
-            if (test.conn_works())
-            {
-                MessageBox.Show("Tester success!");
-            }
-            else
-            {
-                MessageBox.Show("Tester fails!");
-            }
+            MessageBox.Show("This is a testing button");
         }
 
         // Obsolete with dbName disabled (non-interactive)
