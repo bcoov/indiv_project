@@ -16,7 +16,7 @@ namespace DbReader.DataLogic
      */
     internal class Tester : Data<Employee>
     {
-        // Constructor (What exactly is this doing?)
+        // Constructor
         internal Tester()
             : base(ConfigurationManager.AppSettings["db.connections.default"])
         {
