@@ -17,10 +17,9 @@ namespace DbReader.DataLogic
     internal class Tester : Data<Employee>
     {
         // Constructor
-        internal Tester()
-            : base(ConfigurationManager.AppSettings["db.connections.default"])
+        internal Tester(string conn)
         {
-            return;
+            return ConnectionFactory.new_instance(conn);
         }
 
         // Build an Employee object from the database
@@ -44,7 +43,7 @@ namespace DbReader.DataLogic
         // Query and return all Employees within an array (id, first/last name)
         internal Employee[] findAllEmployees()
         {
-            string sqlQuery = "select id, firstName, lastName, email from ***";
+            string sqlQuery = "select id, FNAME, LNAME, email from TRAINEES";
 
             using (OleDbConnection conn = conn_fact.create_connection())
             {

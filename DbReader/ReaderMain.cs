@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
-using System.Data.Sql;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -121,31 +119,26 @@ namespace DbReader
         {
             // "Database" and "Password" obtained from Forms (i.e. User input)
             string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source=" + DataBase + "; Jet OLEDB:Database Password=" + PassWord;
+            string query = "select * from TRAINEES";
             OleDbConnection conn = new OleDbConnection(connectionString);
             try
             {
-                conn.Open();
                 // Following based from http://my.execpc.com/~gopalan/dotnet/ado_net/ado.net_retrieving_database_metadata.html
                 DataTable tables = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
                 DataTable columns = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, null);
 
-                /*OleDbCommand comm = conn.CreateCommand();
-                comm.CommandText = "select * from TrainRec_New where 1 = 1";
-                comm.CommandType = CommandType.Text;
-
-                OleDbDataReader read = comm.ExecuteReader();
-                DataTable scheme = read.GetSchemaTable();
-
-                foreach (DataRow row in tables.Rows)
+                using (OleDbCommand command = new OleDbCommand(query, conn))
                 {
-                    resultList.Text += ("{0}, {1}, {2}" +
-                        row.Field<string>("COLUMN_NAME") +
-                        row.Field<Type>("DATA_TYPE") +
-                        row.Field<int>("COLUMN_SIZE") +
-                        System.Environment.NewLine);
-                }*/
+                    using (OleDbDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.HasRows)
+                        {
+                            resultList.Text += reader.NextResult().ToString() + System.Environment.NewLine;
+                        }
+                    }
+                }
 
-                foreach (DataColumn col in tables.Columns)
+                /*foreach (DataColumn col in tables.Columns)
                 {
                     resultList.Text += (col + System.Environment.NewLine);      // Table MetaData
                 }
@@ -169,7 +162,7 @@ namespace DbReader
                 foreach (DataRow row in columns.Rows)
                 {
                     resultList.Text += (row["TABLE_NAME"] + ":" + row["COLUMN_NAME"] + System.Environment.NewLine);    // Columns
-                }
+                }*/
 
                 MessageBox.Show("Connection Successful!");
             }
