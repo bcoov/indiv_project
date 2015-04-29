@@ -64,9 +64,6 @@ namespace DbReader
         
         /**
          * Prompts user for password to the database
-         * 
-         * 3/19/15: Password validation working properly;
-         * Previous issues were (correctly) caused by incorrect passwords
          */
         private string validateDB()
         {
@@ -96,7 +93,6 @@ namespace DbReader
             OpenFileDialog sel = new OpenFileDialog();
             string startFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             sel.InitialDirectory = startFolder;         // Set initial folder to MyDocuments
-            //sel.CustomPlaces.Add(@"C:\");               // Add the C drive to quick options in browse
 
             System.Windows.Forms.DialogResult res = sel.ShowDialog();
             if (res == DialogResult.OK)
@@ -107,36 +103,58 @@ namespace DbReader
 
         /**
          * Method to connect to the given Database
-         * **Search for "OleDb Metadata" or "OleDb Enumerate tables"
-         *    for finding contents of db tuple names**
-         * 
-         * [April 8th, 2015]
-         * Metadata for Table and Columns obtainable/listable. Now what?
-         * Additionally: What is the MetaData and what does it give me?
-         * Can this be condensed into other methods/classes/folders?
          */
         private void connectDB(string DataBase, string PassWord)
         {
             // "Database" and "Password" obtained from Forms (i.e. User input)
-            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source=" + DataBase + "; Jet OLEDB:Database Password=" + PassWord;
-            string query = "select * from TRAINEES";
-            OleDbConnection conn = new OleDbConnection(connectionString);
-            try
+            //string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source=" + DataBase + "; Jet OLEDB:Database Password=" + PassWord;
+            string query = "Select * from [TRAINEES]";
+            //OleDbConnection conn = new OleDbConnection(connectionString);
+            ConnectionFactory connecter = ConnectionFactory.new_instance(DataBase, PassWord);
+            using (OleDbConnection conn = connecter.create_connection())
             {
-                // Following based from http://my.execpc.com/~gopalan/dotnet/ado_net/ado.net_retrieving_database_metadata.html
-                DataTable tables = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-                DataTable columns = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, null);
+                try
+                {
+                    conn.Open();
 
+                    using (OleDbCommand command = new OleDbCommand(query, conn))
+                    {
+                        using (OleDbDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                resultList.Text += (reader[1].ToString() + ", " + reader[2].ToString() + System.Environment.NewLine);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                
+            }
+            //try
+            //{
+                // Following based from http://my.execpc.com/~gopalan/dotnet/ado_net/ado.net_retrieving_database_metadata.html
+                //DataTable tables = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+                //DataTable columns = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, null);
+
+                /*conn.Open();
                 using (OleDbCommand command = new OleDbCommand(query, conn))
                 {
                     using (OleDbDataReader reader = command.ExecuteReader())
                     {
-                        while (reader.HasRows)
+                        while (reader.Read())
                         {
-                            resultList.Text += reader.NextResult().ToString() + System.Environment.NewLine;
+                            resultList.Text += (reader[1].ToString() + ", " + reader[2].ToString() + System.Environment.NewLine);
                         }
                     }
-                }
+                }*/
 
                 /*foreach (DataColumn col in tables.Columns)
                 {
@@ -164,7 +182,7 @@ namespace DbReader
                     resultList.Text += (row["TABLE_NAME"] + ":" + row["COLUMN_NAME"] + System.Environment.NewLine);    // Columns
                 }*/
 
-                MessageBox.Show("Connection Successful!");
+                /*MessageBox.Show("Connection Successful!");
             }
             catch (Exception ex)
             {
@@ -173,7 +191,7 @@ namespace DbReader
             finally     // Ensure connection is fully closed
             {
                 conn.Close();
-            }
+            }*/
         }
 
         private void formQuit_Click(object sender, EventArgs e)

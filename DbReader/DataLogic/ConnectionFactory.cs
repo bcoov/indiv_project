@@ -10,25 +10,25 @@ namespace DbReader.DataLogic
 {
     /**
      * Database tutorial: http://forum.codecall.net/topic/62182-c-and-databases-part-3-connection-objects/
-     * **Is this a persistence layer style setup?
      */
     internal class ConnectionFactory    // Internal: Only accessible within this assembly
     {
-        private string connection_str;
+        private string preamble = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source=";
+        private string validator = "; Jet OLEDB:Database Password=";
+        private string connect_str;
 
-        private ConnectionFactory(string conn_str)
+        private ConnectionFactory(string dbConn, string passWord)
         {
-            connection_str = conn_str;
+            this.connect_str = preamble + dbConn + validator + passWord;
             return;
         }
 
-        // Constructor: Creates a new connection instance from the given string
-        // using the configuration file. Still trying to figure this part out.
-        internal static ConnectionFactory new_instance(string connection_str)
+        // Constructor: Creates a new connection instance from the given string.
+        internal static ConnectionFactory new_instance(string connect, string pass)
         {
             try
             {
-                return new ConnectionFactory(connection_str);
+                return new ConnectionFactory(connect, pass);
             }
             catch (Exception)
             {
@@ -40,7 +40,7 @@ namespace DbReader.DataLogic
         {
             try
             {
-                return new OleDbConnection(connection_str);
+                return new OleDbConnection(connect_str);
             }
             catch (Exception)
             {

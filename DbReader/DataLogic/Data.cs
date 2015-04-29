@@ -13,9 +13,9 @@ namespace DbReader.DataLogic
         protected ConnectionFactory conn_fact;
 
         // Constructor
-        protected Data(string conn_name)
+        protected Data(string conn_name, string conn_pass)
         {
-            conn_fact = ConnectionFactory.new_instance(conn_name);
+            conn_fact = ConnectionFactory.new_instance(conn_name, conn_pass);
             return;
         }
 

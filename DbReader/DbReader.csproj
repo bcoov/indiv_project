@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="DataLogic\Data.cs" />
     <Compile Include="DataLogic\Employee.cs" />
-    <Compile Include="DataLogic\Tester.cs" />
     <Compile Include="DataLogic\ConnectionFactory.cs" />
     <Compile Include="ReaderMain.cs">
       <SubType>Form</SubType>
