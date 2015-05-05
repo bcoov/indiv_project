@@ -106,12 +106,22 @@ namespace DbReader
          */
         private void connectDB(string DataBase, string PassWord)
         {
+            Data someData = new Data(DataBase, PassWord);
+            Employee thisGuy = someData.find_employees("Diehl", "Todd");
+            if (!thisGuy.lastName.Equals(null))
+            {
+                resultList.Text += (thisGuy.firstName + thisGuy.lastName + System.Environment.NewLine);
+            }
+            else
+            {
+                MessageBox.Show("Error: Null reference");
+            }
             // "Database" and "Password" obtained from Forms (i.e. User input)
             //string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source=" + DataBase + "; Jet OLEDB:Database Password=" + PassWord;
-            string query = "Select * from [TRAINEES]";
+            //string query = "Select * from [TRAINEES]";
             //OleDbConnection conn = new OleDbConnection(connectionString);
-            ConnectionFactory connecter = ConnectionFactory.new_instance(DataBase, PassWord);
-            using (OleDbConnection conn = connecter.create_connection())
+            //ConnectionFactory connecter = ConnectionFactory.new_instance(DataBase, PassWord);
+            /*using (OleDbConnection conn = connecter.create_connection())
             {
                 try
                 {
@@ -123,7 +133,7 @@ namespace DbReader
                         {
                             while (reader.Read())
                             {
-                                resultList.Text += (reader[1].ToString() + ", " + reader[2].ToString() + System.Environment.NewLine);
+                                resultList.Text += (reader[0].ToString() + ", " + reader[1].ToString() + ", " + reader[2].ToString() + System.Environment.NewLine);
                             }
                         }
                     }
@@ -136,8 +146,7 @@ namespace DbReader
                 {
                     conn.Close();
                 }
-                
-            }
+            }*/
             //try
             //{
                 // Following based from http://my.execpc.com/~gopalan/dotnet/ado_net/ado.net_retrieving_database_metadata.html

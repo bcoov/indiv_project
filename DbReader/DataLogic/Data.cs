@@ -8,55 +8,52 @@ using System.Threading.Tasks;
 
 namespace DbReader.DataLogic
 {
-    internal abstract class Data<T>
+    public class Data
     {
-        protected ConnectionFactory conn_fact;
+        private ConnectionFactory conn_fact;
 
         // Constructor
-        protected Data(string conn_name, string conn_pass)
+        public Data(string conn_name, string conn_pass)
         {
             conn_fact = ConnectionFactory.new_instance(conn_name, conn_pass);
             return;
         }
 
-        protected T get_result(Func<IDataReader, T> extract_func, IDataReader reader)
+        public Employee find_employees(string lastName, string firstName)
         {
-            using (reader)
+            string query = "Select * from Trainees where Lname = ? and Fname = ?";
+
+            using (OleDbConnection connect = conn_fact.create_connection())
             {
-                if (!reader.Read())
+                try
                 {
-                    return default(T);
+                    connect.Open();
+                    using (OleDbCommand cmd = new OleDbCommand(query, connect))
+                    {
+                        cmd.Parameters.AddWithValue("first", lastName);
+                        cmd.Parameters.AddWithValue("second", firstName);
+
+                        Employee result = null;
+                        using (OleDbDataReader read = cmd.ExecuteReader())
+                        {
+                            while (read.Read())
+                            {
+                                result = new Employee();
+                                result.firstName = (string)read["fname"];
+                                result.lastName = (string)read["lname"];
+                            }
+                        }
+
+                        return result;
+                    }
                 }
-                return extract_func(reader);
+                finally
+                {
+                    connect.Close();
+                }
             }
         }
 
-        protected T[] get_results(Func<IDataReader, T> extract_func, IDataReader reader)
-        {
-            using (reader)
-            {
-                List<T> results = new List<T>();
-                while (reader.Read())
-                {
-                    results.Add(extract_func(reader));
-                }
-                return results.ToArray();
-            }
-        }
-
-        protected NT extract_scalar<NT>(IDataReader reader)
-        {
-            using (reader)
-            {
-                if (reader.Read())
-                {
-                    return (NT)reader.GetValue(0);
-                }
-                else
-                {
-                    return default(NT);
-                }
-            }
-        }
+        
     }
 }
