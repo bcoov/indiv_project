@@ -106,36 +106,29 @@ namespace DbReader
          */
         private void connectDB(string DataBase, string PassWord)
         {
-            Data someData = new Data(DataBase, PassWord);
-            Employee thisGuy = someData.find_employees("Diehl", "Todd");
-            if (!thisGuy.lastName.Equals(null))
-            {
-                resultList.Text += (thisGuy.firstName + thisGuy.lastName + System.Environment.NewLine);
-            }
-            else
-            {
-                MessageBox.Show("Error: Null reference");
-            }
             // "Database" and "Password" obtained from Forms (i.e. User input)
             //string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source=" + DataBase + "; Jet OLEDB:Database Password=" + PassWord;
-            //string query = "Select * from [TRAINEES]";
             //OleDbConnection conn = new OleDbConnection(connectionString);
-            //ConnectionFactory connecter = ConnectionFactory.new_instance(DataBase, PassWord);
-            /*using (OleDbConnection conn = connecter.create_connection())
+            string query = "Select * from [TRAINEES]";
+            ConnectionFactory connecter = ConnectionFactory.new_instance(DataBase, PassWord);
+            Data myData = new Data(DataBase, PassWord);
+            using (OleDbConnection conn = myData.connect_data())
             {
                 try
                 {
                     conn.Open();
 
-                    using (OleDbCommand command = new OleDbCommand(query, conn))
+                    List<Employee> trainees = myData.find_employees(conn);
+                    List<String> tableNames = myData.get_tables(conn);
+                    Employee specific = myData.find_an_employee(conn, "Samuel", "Coover");
+                    /*foreach (Employee e in trainees)
                     {
-                        using (OleDbDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                resultList.Text += (reader[0].ToString() + ", " + reader[1].ToString() + ", " + reader[2].ToString() + System.Environment.NewLine);
-                            }
-                        }
+                        resultList.Text += (e.firstName + " " + e.midInit + ". " + e.lastName + System.Environment.NewLine);
+                    }*/
+                    //resultList.Text += (specific.firstName + " " + specific.midInit + ". " + specific.lastName);
+                    foreach (String s in tableNames)
+                    {
+                        resultList.Text += (s + System.Environment.NewLine);
                     }
                 }
                 catch (Exception ex)
@@ -146,7 +139,7 @@ namespace DbReader
                 {
                     conn.Close();
                 }
-            }*/
+            }
             //try
             //{
                 // Following based from http://my.execpc.com/~gopalan/dotnet/ado_net/ado.net_retrieving_database_metadata.html

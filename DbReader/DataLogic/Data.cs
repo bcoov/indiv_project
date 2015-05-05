@@ -10,50 +10,70 @@ namespace DbReader.DataLogic
 {
     public class Data
     {
-        private ConnectionFactory conn_fact;
+        private ConnectionFactory connector;
 
-        // Constructor
-        public Data(string conn_name, string conn_pass)
+        // Constructor: Create a connection instance to the given database
+        public Data(string dBase, string pword)
         {
-            conn_fact = ConnectionFactory.new_instance(conn_name, conn_pass);
-            return;
+            this.connector = ConnectionFactory.new_instance(dBase, pword);
         }
 
-        public Employee find_employees(string lastName, string firstName)
+        public OleDbConnection connect_data()
         {
-            string query = "Select * from Trainees where Lname = ? and Fname = ?";
+            return connector.create_connection();
+        }
 
-            using (OleDbConnection connect = conn_fact.create_connection())
+        public List<Employee> find_employees(OleDbConnection conn) {
+            List<Employee> empList = new List<Employee>();
+            string query = "select * from [TRAINEES]";
+
+            using (OleDbCommand cmd = new OleDbCommand(query, conn))
             {
-                try
+                using (OleDbDataReader reader = cmd.ExecuteReader())
                 {
-                    connect.Open();
-                    using (OleDbCommand cmd = new OleDbCommand(query, connect))
+                    while (reader.Read())
                     {
-                        cmd.Parameters.AddWithValue("first", lastName);
-                        cmd.Parameters.AddWithValue("second", firstName);
-
-                        Employee result = null;
-                        using (OleDbDataReader read = cmd.ExecuteReader())
-                        {
-                            while (read.Read())
-                            {
-                                result = new Employee();
-                                result.firstName = (string)read["fname"];
-                                result.lastName = (string)read["lname"];
-                            }
-                        }
-
-                        return result;
+                        Employee temp = new Employee();
+                        temp.lastName = reader[0].ToString();
+                        temp.firstName = reader[1].ToString();
+                        temp.midInit = reader[2].ToString();
+                        empList.Add(temp);
                     }
-                }
-                finally
-                {
-                    connect.Close();
+                    return empList;
                 }
             }
         }
 
-        
+        public Employee find_an_employee(OleDbConnection conn, string fName, string lName)
+        {
+            Employee emply = new Employee();
+            string query = "select * from [TRAINEES] where [FNAME]=? and [LNAME]=?";
+
+            using (OleDbCommand cmd = new OleDbCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("?", fName);
+                cmd.Parameters.AddWithValue("?", lName);
+                using (OleDbDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        emply.lastName = reader[0].ToString();
+                        emply.firstName = reader[1].ToString();
+                        emply.midInit = reader[2].ToString();
+                    }
+                    return emply;
+                }
+            }
+        }
+
+        public List<String> get_tables(OleDbConnection conn) {
+            List<String> tableNames = new List<String>();
+            DataTable tables = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+
+            foreach (DataRow row in tables.Rows) {
+                tableNames.Add(row["TABLE_NAME"].ToString());
+            }
+            return tableNames;
+        }
     }
 }
