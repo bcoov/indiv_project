@@ -48,6 +48,12 @@
     <Compile Include="DataLogic\Data.cs" />
     <Compile Include="DataLogic\Employee.cs" />
     <Compile Include="DataLogic\ConnectionFactory.cs" />
+    <Compile Include="DataView\QueryPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView\QueryPrompt.Designer.cs">
+      <DependentUpon>QueryPrompt.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataView\ReaderMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +68,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DataView\QueryPrompt.resx">
+      <DependentUpon>QueryPrompt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataView\ReaderMain.resx">
       <DependentUpon>ReaderMain.cs</DependentUpon>
     </EmbeddedResource>
