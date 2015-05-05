@@ -48,24 +48,24 @@
     <Compile Include="DataLogic\Data.cs" />
     <Compile Include="DataLogic\Employee.cs" />
     <Compile Include="DataLogic\ConnectionFactory.cs" />
-    <Compile Include="ReaderMain.cs">
+    <Compile Include="DataView\ReaderMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ReaderMain.Designer.cs">
+    <Compile Include="DataView\ReaderMain.Designer.cs">
       <DependentUpon>ReaderMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Prompt.cs">
+    <Compile Include="DataView\Prompt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Prompt.Designer.cs">
+    <Compile Include="DataView\Prompt.Designer.cs">
       <DependentUpon>Prompt.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ReaderMain.resx">
+    <EmbeddedResource Include="DataView\ReaderMain.resx">
       <DependentUpon>ReaderMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Prompt.resx">
+    <EmbeddedResource Include="DataView\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -87,9 +87,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
