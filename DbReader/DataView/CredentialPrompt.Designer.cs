@@ -1,4 +1,4 @@
-﻿namespace DbReader
+﻿namespace DbReader.DataView
 {
     partial class CredentialPrompt
     {
