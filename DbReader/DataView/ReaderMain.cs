@@ -14,10 +14,6 @@ namespace DbReader.DataView
 {
     public partial class ReaderMain : Form
     {
-        // String for database file path
-        // See CredentialPrompt.PassWord for info
-        // Possible to change this to regular property?
-        // (Does anything else need to use this?)
         public string selectedFilePath
         {
             get

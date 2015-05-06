@@ -25,6 +25,7 @@ namespace DbReader.DataLogic
 
         public List<Employee> find_employees(OleDbConnection conn) {
             List<Employee> empList = new List<Employee>();
+            // this isn't getting the whole Trainees table!
             string query = "select * from [TRAINEES]";
 
             using (OleDbCommand cmd = new OleDbCommand(query, conn))
