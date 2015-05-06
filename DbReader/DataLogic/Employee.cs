@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DbReader.DataLogic
 {
-    public class Employee
+    public class Trainee
     {
-        public Employee()
+        public Trainee()
         {
 
         }

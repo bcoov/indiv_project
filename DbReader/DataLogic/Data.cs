@@ -23,8 +23,8 @@ namespace DbReader.DataLogic
             return connector.create_connection();
         }
 
-        public List<Employee> find_employees(OleDbConnection conn) {
-            List<Employee> empList = new List<Employee>();
+        public List<Trainee> find_employees(OleDbConnection conn) {
+            List<Trainee> empList = new List<Trainee>();
             // this isn't getting the whole Trainees table!
             string query = "select * from [TRAINEES]";
 
@@ -34,7 +34,7 @@ namespace DbReader.DataLogic
                 {
                     while (reader.Read())
                     {
-                        Employee temp = new Employee();
+                        Trainee temp = new Trainee();
                         temp.lastName = reader[0].ToString();
                         temp.firstName = reader[1].ToString();
                         temp.midInit = reader[2].ToString();
@@ -45,9 +45,9 @@ namespace DbReader.DataLogic
             }
         }
 
-        public Employee find_an_employee(OleDbConnection conn, string fName, string lName)
+        public Trainee find_an_employee(OleDbConnection conn, string fName, string lName)
         {
-            Employee emply = new Employee();
+            Trainee emply = new Trainee();
             string query = "select * from [TRAINEES] where [FNAME]=? and [LNAME]=?";
 
             using (OleDbCommand cmd = new OleDbCommand(query, conn))

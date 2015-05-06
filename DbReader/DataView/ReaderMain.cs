@@ -131,14 +131,14 @@ namespace DbReader.DataView
                     {
                         case 0:
                             {
-                                Employee specific = myData.find_an_employee(conn, selectQuery.fName, selectQuery.lName);
+                                Trainee specific = myData.find_an_employee(conn, selectQuery.fName, selectQuery.lName);
                                 resultList.Text += (specific.firstName + " " + specific.midInit + ". " + specific.lastName);
                                 break;
                             }
                         case 1:
                             {
-                                List<Employee> trainees = myData.find_employees(conn);
-                                foreach (Employee e in trainees)
+                                List<Trainee> trainees = myData.find_employees(conn);
+                                foreach (Trainee e in trainees)
                                 {
                                     resultList.Text += (e.firstName + " " + e.midInit + ". " + e.lastName + System.Environment.NewLine);
                                 }
